@@ -6,7 +6,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,11 +20,11 @@ import java.util.List;
 
 public class CrimeListFragment extends Fragment {
     private static final int REQUEST_CRIME = 1;
+    private String LOG_TAG = "GO";
+    private int mPosition = 0;
 
     private RecyclerView mRecyclerView;
     private CrimeAdapter mCrimeAdapter;
-    private TextView mTitleTextView;
-    private TextView mDateTextView;
 
     @Nullable
     @Override
@@ -52,20 +51,21 @@ public class CrimeListFragment extends Fragment {
             mRecyclerView.setAdapter(mCrimeAdapter);
         }
         else{
-            mCrimeAdapter.notifyDataSetChanged();
+            mCrimeAdapter.notifyItemChanged(mPosition);
         }
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode== REQUEST_CRIME){
-            Log.v("CRIME", String.valueOf(resultCode));
         }
     }
 
     private class CrimeHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         private Crime mCrime;
         private ImageView mSolvedImageView;
+        private TextView mTitleTextView;
+        private TextView mDateTextView;
 
         public CrimeHolder(LayoutInflater inflater, ViewGroup parent) {
             super(inflater.inflate(R.layout.list_item_crime, parent, false));
@@ -77,14 +77,15 @@ public class CrimeListFragment extends Fragment {
 
         public void bind(Crime crime){
             mCrime = crime;
-            mTitleTextView.setText(crime.getTitle());
-            mDateTextView.setText(crime.getDate().toString());
-            mSolvedImageView.setVisibility(crime.isSolved()? View.VISIBLE : View.INVISIBLE);
+            mTitleTextView.setText(mCrime.getTitle());
+            mDateTextView.setText(mCrime.getDate().toString());
+            mSolvedImageView.setVisibility(mCrime.isSolved()? View.VISIBLE : View.INVISIBLE);
         }
 
         @Override
         public void onClick(View v) {
             Intent intent = CrimeActivity.newIntent(getActivity(), mCrime.getId());
+            mPosition = mCrime.getIndex();
             startActivityForResult(intent, REQUEST_CRIME);
         }
     }
