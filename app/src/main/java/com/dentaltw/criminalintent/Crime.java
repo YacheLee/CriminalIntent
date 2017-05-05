@@ -9,21 +9,21 @@ import java.util.UUID;
 
 public class Crime {
     private int index;
-    private UUID mId;
+    private String mId;
     private String mTitle;
     private Date mDate;
     private boolean mSolved;
 
     public Crime() {
-        mId = UUID.randomUUID();
+        mId = UUID.randomUUID().toString();
         mDate = new Date();
     }
 
-    public UUID getId() {
+    public String getId() {
         return mId;
     }
 
-    public void setId(UUID id) {
+    public void setId(String id) {
         mId = id;
     }
 
