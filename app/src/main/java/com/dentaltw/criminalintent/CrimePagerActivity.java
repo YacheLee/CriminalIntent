@@ -8,12 +8,17 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.Button;
 
 import java.util.List;
 
 public class CrimePagerActivity extends AppCompatActivity {
     private static final String EXTRA_CRIME_ID = "com.dentaltw.android.criminalintent.crime_id";
     private ViewPager mViewPager;
+    private Button mPrevButton;
+    private Button mNextButton;
+    private Crime mCrime;
     private List<Crime> mCrimeList;
 
     public static Intent newIntent(Context packageContext, String crimeId){
@@ -33,10 +38,10 @@ public class CrimePagerActivity extends AppCompatActivity {
         mCrimeList = CrimeLab.get(this).getCrimes();
         FragmentManager fragmentManager = getSupportFragmentManager();
         mViewPager.setAdapter(new FragmentStatePagerAdapter(fragmentManager) {
-
             @Override
             public Fragment getItem(int position) {
                 Crime crime = mCrimeList.get(position);
+                mCrime = crime;
                 return CrimeFragment.newInstance(crime.getId());
             }
 
@@ -46,5 +51,33 @@ public class CrimePagerActivity extends AppCompatActivity {
             }
         });
         mViewPager.setCurrentItem(Integer.parseInt(crimeId));
+
+        mPrevButton = (Button) findViewById(R.id.btn_prev);
+        mNextButton = (Button) findViewById(R.id.btn_next);
+        updateButtonStatus();
+
+        mPrevButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mViewPager.setCurrentItem(mViewPager.getCurrentItem()-1);
+                updateButtonStatus();
+            }
+        });
+
+        mNextButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mViewPager.setCurrentItem(mViewPager.getCurrentItem()+1);
+                updateButtonStatus();
+            }
+        });
+    }
+
+    private void updateButtonStatus(){
+        final int currentItem = mViewPager.getCurrentItem();
+        boolean isFirst = currentItem==0;
+        boolean isLast = currentItem==mCrimeList.size()-1;
+        mPrevButton.setEnabled(isFirst? false: true);
+        mNextButton.setEnabled(isLast? false: true);
     }
 }
