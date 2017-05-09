@@ -19,7 +19,7 @@ import java.util.List;
 
 public class CrimeListFragment extends Fragment {
     private static final String SAVED_SUBTITLE_VISIBLE = "subtitle";
-    private static final int REQUEST_CRIME = 1;
+    public static final int REQUEST_CRIME = 1;
     private String LOG_TAG = "GO";
     private int mPosition = 0;
 
