@@ -4,8 +4,8 @@
     <string name="crime_title_label">Title</string>
     <string name="crime_details_label">Details</string>
     <string name="crime_solved_label">Solved</string>
-    <string name="btn_prev">Previous</string>
-    <string name="btn_next">下一個</string>
+    <string name="btn_prev">Prev</string>
+    <string name="btn_next">Next</string>
     <string name="date_picker_title">Date of crime:</string>
     <string name="new_crime">New Crime</string>
     <string name="show_subtitle">Show Subtitle</string>
@@ -15,4 +15,6 @@
         <item quantity="one">%1$d crim</item>
         <item quantity="other">%1$d crimes</item>
     </plurals>
+    <string name="no_crimes">There are not Crimes</string>
+    <string name="add">Add a crime</string>
 </resources>

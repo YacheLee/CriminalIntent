@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.*;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -27,6 +28,9 @@ public class CrimeListFragment extends Fragment {
     private CrimeAdapter mCrimeAdapter;
     private boolean mSubtitleVisible;
 
+    private TextView message;
+    private Button addBtn;
+
     @Override
     public void onCreate(Bundle saveInstanceState){
         super.onCreate(saveInstanceState);
@@ -39,6 +43,17 @@ public class CrimeListFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_crime_list, container, false);
         mRecyclerView = (RecyclerView) view.findViewById(R.id.crime_recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        message = (TextView) view.findViewById(R.id.message_text);
+        addBtn = (Button) view.findViewById(R.id.add_crime_btn);
+
+        addBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addCrime();
+            }
+        });
+
         if (savedInstanceState != null) {
             mSubtitleVisible = savedInstanceState.getBoolean(SAVED_SUBTITLE_VISIBLE);
         }
@@ -82,10 +97,7 @@ public class CrimeListFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.new_crime:
-                Crime crime = new Crime(String.valueOf(mCrimeAdapter.getItemCount()));
-                CrimeLab.get(getActivity()).addCrime(crime);
-                Intent intent = CrimePagerActivity.newIntent(getActivity(), crime.getId());
-                startActivity(intent);
+                addCrime();
                 return true;
             case R.id.show_subtitle:
                 mSubtitleVisible = !mSubtitleVisible;
@@ -95,6 +107,13 @@ public class CrimeListFragment extends Fragment {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void addCrime() {
+        Crime crime = new Crime(String.valueOf(mCrimeAdapter.getItemCount()));
+        CrimeLab.get(getActivity()).addCrime(crime);
+        Intent intent = CrimePagerActivity.newIntent(getActivity(), crime.getId());
+        startActivity(intent);
     }
 
     private void updateSubtitle(){
@@ -113,6 +132,7 @@ public class CrimeListFragment extends Fragment {
     private void updateUI(){
         CrimeLab crimeLab = CrimeLab.get(getActivity());
         List<Crime> crimes = crimeLab.getCrimes();
+        int size = crimes.size();
 
         if (mCrimeAdapter==null) {
             mCrimeAdapter = new CrimeAdapter(crimes);
@@ -121,6 +141,11 @@ public class CrimeListFragment extends Fragment {
         else{
             mCrimeAdapter.notifyItemChanged(mPosition);
         }
+
+        boolean isZero = size==0;
+        mRecyclerView.setVisibility(isZero? View.INVISIBLE : View.VISIBLE);
+        message.setVisibility(isZero? View.VISIBLE : View.INVISIBLE);
+        addBtn.setVisibility(isZero? View.VISIBLE : View.INVISIBLE);
 
         updateSubtitle();
     }
