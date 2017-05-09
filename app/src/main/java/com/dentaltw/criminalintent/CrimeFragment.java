@@ -102,6 +102,7 @@ public class CrimeFragment extends Fragment {
 
                 Intent intent = CrimeListActivity.newIntent(activity);
                 startActivity(intent);
+                activity.finish();
             }
         });
 
