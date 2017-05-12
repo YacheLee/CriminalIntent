@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.*;
 
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * Created by Scott on 2017/5/3.
@@ -31,7 +32,7 @@ public class CrimeFragment extends Fragment {
     private CheckBox mSolvedCheckbox;
     private ImageButton mDelBtn;
 
-    public static CrimeFragment newInstance(String crimeId){
+    public static CrimeFragment newInstance(UUID crimeId){
         Bundle args = new Bundle();
         args.putSerializable(ARG_CRIME_ID, crimeId);
 
@@ -43,7 +44,7 @@ public class CrimeFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        String crimeId = (String) getArguments().getSerializable(ARG_CRIME_ID);
+        UUID crimeId = (UUID) getArguments().getSerializable(ARG_CRIME_ID);
         mCrime = CrimeLab.get(getActivity()).getCrime(crimeId);
     }
 
@@ -123,5 +124,11 @@ public class CrimeFragment extends Fragment {
 
     private void updateDate() {
         mDateButton.setText(mCrime.getDate().toString());
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        CrimeLab.get(getActivity()).updateCrime(mCrime);
     }
 }

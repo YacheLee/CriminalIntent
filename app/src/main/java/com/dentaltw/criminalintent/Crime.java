@@ -1,6 +1,7 @@
 package com.dentaltw.criminalintent;
 
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * Created by Scott on 2017/5/3.
@@ -8,21 +9,25 @@ import java.util.Date;
 
 public class Crime {
     private int index;
-    private String mId;
+    private UUID mId;
     private String mTitle;
     private Date mDate;
     private boolean mSolved;
 
-    public Crime(String id) {
+    public Crime(){
+        this(UUID.randomUUID());
+    }
+
+    public Crime(UUID id) {
         mId = id;
         mDate = new Date();
     }
 
-    public String getId() {
+    public UUID getId() {
         return mId;
     }
 
-    public void setId(String id) {
+    public void setId(UUID id) {
         mId = id;
     }
 

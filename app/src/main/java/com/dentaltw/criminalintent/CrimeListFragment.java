@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by Scott on 2017/5/3.
@@ -21,7 +22,6 @@ import java.util.List;
 public class CrimeListFragment extends Fragment {
     private static final String SAVED_SUBTITLE_VISIBLE = "subtitle";
     public static final int REQUEST_CRIME = 1;
-    private String LOG_TAG = "GO";
     private int mPosition = 0;
 
     private RecyclerView mRecyclerView;
@@ -110,9 +110,10 @@ public class CrimeListFragment extends Fragment {
     }
 
     private void addCrime() {
-        Crime crime = new Crime(String.valueOf(mCrimeAdapter.getItemCount()));
+        UUID crimeId = UUID.randomUUID();
+        Crime crime = new Crime(crimeId);
         CrimeLab.get(getActivity()).addCrime(crime);
-        Intent intent = CrimePagerActivity.newIntent(getActivity(), crime.getId());
+        Intent intent = CrimePagerActivity.newIntent(getActivity(), crimeId);
         startActivity(intent);
     }
 
@@ -139,6 +140,7 @@ public class CrimeListFragment extends Fragment {
             mRecyclerView.setAdapter(mCrimeAdapter);
         }
         else{
+            mCrimeAdapter.setCrimes(crimes);
             mCrimeAdapter.notifyItemChanged(mPosition);
         }
 
@@ -146,7 +148,6 @@ public class CrimeListFragment extends Fragment {
         mRecyclerView.setVisibility(isZero? View.INVISIBLE : View.VISIBLE);
         message.setVisibility(isZero? View.VISIBLE : View.INVISIBLE);
         addBtn.setVisibility(isZero? View.VISIBLE : View.INVISIBLE);
-
         updateSubtitle();
     }
 
@@ -174,8 +175,7 @@ public class CrimeListFragment extends Fragment {
         @Override
         public void onClick(View v) {
             Intent intent = CrimePagerActivity.newIntent(getActivity(), mCrime.getId());
-            mPosition = mCrime.getIndex();
-            startActivityForResult(intent, REQUEST_CRIME);
+            startActivity(intent);
         }
     }
 
@@ -201,6 +201,10 @@ public class CrimeListFragment extends Fragment {
         @Override
         public int getItemCount() {
             return mCrimeList.size();
+        }
+
+        public void setCrimes(List<Crime> crimes) {
+            mCrimeList = crimes;
         }
     }
 }
