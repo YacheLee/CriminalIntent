@@ -86,8 +86,15 @@ public class CrimeLab {
 
     public void addCrime(Crime crime){
         ContentValues values = getContentValues(crime);
-
         mDatabase.insert(CrimeDbSchema.CrimeTable.NAME, null, values);
+    }
+
+    public void remove(Crime crime){
+        String uuidString = crime.getId().toString();
+        String table = CrimeDbSchema.CrimeTable.NAME;
+        String where = UUID+" =  ?";
+        String[] whereArgs = new String[]{uuidString};
+        mDatabase.delete(table, where ,whereArgs );
     }
 
     private static ContentValues getContentValues(Crime crime) {

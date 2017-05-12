@@ -99,8 +99,7 @@ public class CrimeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 FragmentActivity activity = getActivity();
-                CrimeLab.get(activity).getCrimes().remove(mCrime);
-
+                CrimeLab.get(getActivity()).remove(mCrime);
                 Intent intent = CrimeListActivity.newIntent(activity);
                 startActivity(intent);
                 activity.finish();
