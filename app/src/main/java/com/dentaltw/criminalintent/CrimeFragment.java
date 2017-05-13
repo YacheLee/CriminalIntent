@@ -116,6 +116,7 @@ public class CrimeFragment extends Fragment {
                 i.setType("text/plain");
                 i.putExtra(Intent.EXTRA_TEXT, getCrimeReport());
                 i.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.crime_report_subject));
+                i = Intent.createChooser(i, getString(R.string.send_report));
                 startActivity(i);
             }
         });
@@ -156,8 +157,7 @@ public class CrimeFragment extends Fragment {
         else{
             suspect = getString(R.string.crime_report_suspect, suspect);
         }
-
-        String report = getString(R.string.crime_report, mCrime.getTitle(), dateString, solvedString, suspect);
+String report = getString(R.string.crime_report, mCrime.getTitle(), dateString, solvedString, suspect);
         return report;
     }
 
