@@ -39,6 +39,7 @@ public class CrimeFragment extends Fragment {
     private static final int REQUEST_DATE = 0;
     private static final int REQUEST_CONTACT = 1;
     private static final int REQUEST_PHOTO = 2;
+    private static final int REQUEST_DIALOG_PHOTO = 22;
 
     private Crime mCrime;
     private File mPhotoFile;
@@ -177,6 +178,15 @@ public class CrimeFragment extends Fragment {
         });
 
         mPhotoView = (ImageView) view.findViewById(R.id.crime_photo);
+        mPhotoView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            FragmentManager manager = getFragmentManager();
+            PhotoPickerFragment dialog = PhotoPickerFragment.newInstance(mPhotoFile.getPath());
+            dialog.setTargetFragment(CrimeFragment.this, REQUEST_DIALOG_PHOTO);
+            dialog.show(manager, "GO");
+            }
+        });
         updatePhotoView();
         return view;
     }
