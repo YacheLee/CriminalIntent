@@ -14,7 +14,7 @@ import android.widget.Button;
 import java.util.List;
 import java.util.UUID;
 
-public class CrimePagerActivity extends AppCompatActivity {
+public class CrimePagerActivity extends AppCompatActivity implements CrimeFragment.Callbacks{
     private static final String EXTRA_CRIME_ID = "com.dentaltw.android.criminalintent.crime_id";
     private ViewPager mViewPager;
     private Button mPrevButton;
@@ -83,5 +83,10 @@ public class CrimePagerActivity extends AppCompatActivity {
         boolean isLast = currentItem==mCrimes.size()-1;
         mPrevButton.setEnabled(isFirst? false: true);
         mNextButton.setEnabled(isLast? false: true);
+    }
+
+    @Override
+    public void onCrimeUpdated(Crime crime) {
+
     }
 }
